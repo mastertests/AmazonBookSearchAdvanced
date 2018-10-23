@@ -1,0 +1,11 @@
+*.class
+*.iws
+*.iml
+
+out/
+target/
+reports/
+
+.idea/
+.idea_modules/
+.gitignore
