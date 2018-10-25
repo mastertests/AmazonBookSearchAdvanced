@@ -3,7 +3,6 @@
 <suite name="Linked in test" verbose="1">
 
     <parameter name="searchText" value="Java"/>
-    <parameter name="searchOption" value="Books"/>
 
     <test name="Check main page">
         <classes>

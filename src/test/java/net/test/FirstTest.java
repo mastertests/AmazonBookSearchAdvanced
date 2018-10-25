@@ -19,9 +19,9 @@ public class FirstTest extends BaseTest {
     }
 
     @Test
-    @Parameters({"searchText", "searchOption"})
-    public void openResultPage(String searchText, String searchOption) {
-        List<Book> searchBooks = Pages.searchResultPage().getBookSearchResult(searchText, searchOption);
+    @Parameters({"searchText"})
+    public void openResultPage(String searchText) {
+        List<Book> searchBooks = Pages.searchResultPage().getBookSearchResult(searchText);
         Assert.assertTrue(Actions.searchActions().checkBooksResult(searchBooks), "Head First Java, 2nd Edition is NOT on the list");
     }
 }

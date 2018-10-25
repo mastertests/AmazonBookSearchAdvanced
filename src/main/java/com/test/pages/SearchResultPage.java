@@ -20,8 +20,8 @@ public class SearchResultPage extends BasePage {
         page.clickSearchButton();
     }
 
-    public List<Book> getBookSearchResult(String searchString, String searchOptionString) {
-        getSearchResult(searchString, searchOptionString);
+    public List<Book> getBookSearchResult(String searchString) {
+        getSearchResult(searchString, "Books");
 
         List<Book> books = new ArrayList<>();
         int resultItemsSize = getElements(resultItems).size();
@@ -30,13 +30,13 @@ public class SearchResultPage extends BasePage {
             String dataAsin = getElement(resultBlockLocator).getAttribute("data-asin");
 
             Locator nameLocator = new XPath("//li[@id=\"result_" + i + "\"]//h2");
-            Locator authorLocator = new XPath("//li[@id=\"result_" + i + "\"]//div[@class='a-row a-spacing-none'][2]");
+            Locator authorLocator = new XPath("//li[@id=\"result_" + i + "\"]//div[@class='a-row a-spacing-small']//div[contains(.,'by')]");
             Locator priceLocator = new XPath("//li[@id=\"result_" + i + "\"]//div[@class='a-column a-span7']//span[@class='sx-price sx-price-large']");
             Locator bestSellerLocator = new ID("BESTSELLER_" + dataAsin);
 
             String name = getElement(nameLocator).getText();
-            String author = getElement(authorLocator).getText();
-            double price = (double) Integer.valueOf(getElement(priceLocator).getText().replace(" ", "").substring(1)) / 100;
+            String author = getElement(authorLocator).getText().replace("by ", "");
+            double price = (double) Integer.valueOf(getElement(priceLocator).getText().replace(" ", "").replace("$", "")) / 100;
             String ratio = setRatio(dataAsin);
             boolean bestSeller = isElementPresent(bestSellerLocator);
 

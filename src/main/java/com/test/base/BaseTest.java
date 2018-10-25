@@ -22,6 +22,11 @@ import java.util.concurrent.TimeUnit;
 public class BaseTest implements ITest {
 
     public static WebDriver driver;
+    private final String username = "mastertests";
+    private final String accessKey = "c6d32ca4-6e59-454c-8021-2e3d1f3fd374";
+
+    private final String hubUrl = String.format("http://%s:%s@ondemand.saucelabs.com:80/wd/hub", username, accessKey);
+
     protected String currentAnnotatedMethodName = "";
 
     @AfterMethod
@@ -53,11 +58,11 @@ public class BaseTest implements ITest {
     }
 
     protected void setupFirefoxRemoteDriver(String hubUrl, String platformName) throws IOException {
-        Platform platform = (platformName != null) ? Platform.valueOf(platformName) : Platform.ANY;
+        String platform = (platformName != null) ? platformName.toLowerCase() : Platform.ANY.name();
 
         DesiredCapabilities capabilities = DesiredCapabilities.firefox();
         capabilities.setBrowserName("firefox");
-        capabilities.setPlatform(platform);
+        capabilities.setCapability("platform", platform);
         capabilities.setCapability(CapabilityType.TAKES_SCREENSHOT, true);
 
         driver = new CustomRemoteWebDriver(new URL(hubUrl), capabilities);
@@ -127,11 +132,11 @@ public class BaseTest implements ITest {
 
 
     protected void setupChromeRemoteDriver(String hubUrl, String platformName) throws IOException {
-        Platform platform = (platformName != null) ? Platform.valueOf(platformName) : Platform.ANY;
+        String platform = (platformName != null) ? platformName.toLowerCase() : Platform.ANY.name();
 
         DesiredCapabilities capabilities = DesiredCapabilities.chrome();
         capabilities.setBrowserName("chrome");
-        capabilities.setPlatform(platform);
+        capabilities.setCapability("platform", platform);
         capabilities.setCapability(CapabilityType.TAKES_SCREENSHOT, true);
 
         driver = new CustomRemoteWebDriver(new URL(hubUrl), capabilities);
@@ -152,9 +157,8 @@ public class BaseTest implements ITest {
         Reporter.log("\n" + message);
         System.out.println(message);
 
-        String hubUrl = System.getProperty("hub");
         String browser = Constants.DEFAULT_BROWSER;
-        String platform = System.getProperty("sun.desktop"); //or  os.name
+        String platform = System.getProperty("os.name");
 
         if (browser.equalsIgnoreCase("chrome")) {
             if (hubUrl != null && !hubUrl.isEmpty()) {
